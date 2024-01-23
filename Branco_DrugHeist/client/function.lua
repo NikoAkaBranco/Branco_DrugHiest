@@ -58,10 +58,10 @@ RegisterNetEvent("Spawncar", function()
 QBCore.Functions.TriggerCallback('QBCore:Server:SpawnVehicle', function(netId)
 	local veh = NetToVeh(netId)
 	SetCarItemsInfo()
-
+    SetVehicleDoorsLocked(Config.car, false)
 	--TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
 	TriggerServerEvent('inventory:server:addTrunkItems', QBCore.Functions.GetPlate(veh), Config.reward)
-	SetVehicleEngineOn(veh, true, true)
+
 end, Config.car, Config.outpost1, false)
 end)
 

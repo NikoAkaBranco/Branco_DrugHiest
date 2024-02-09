@@ -1,10 +1,10 @@
-local QBCore = exports["qb-core"]:GetCoreObject()
+QBCore = exports["qb-core"]:GetCoreObject()
 
 
 RegisterNetEvent("start", function()    
     local player = PlayerPedId()   --- get the id of the player 
     local gpsDestination = Config.outpost1
-
+  
 	FreezeEntityPosition(player, true) -- make the progressbar only activate on the player there is using it 
 	QBCore.Functions.Progressbar("drug-", "Talking whit mike ", 8000, false, true, { -- ("Just keep it", "Message", time, false, true, {
 		disableMovement = true,
@@ -17,12 +17,17 @@ RegisterNetEvent("start", function()
 		flags = 16,
 	}, {}, {}, function() -- Done
 		FreezeEntityPosition(player, false)  -- unfreezes the player 
+       
+        exports['okokNotify']:Alert('Branco DrugHiest', 'Wait for my call', 15000, 'info', true)
+       
+        Wait(50000)
 		TriggerServerEvent("start")  -- trigger the event to get the items 
-      SetNewWaypoint(gpsDestination)
-      exports['qb-notify']:Notify(Config.Startmsg, "success", 100000000)  
+        SetNewWaypoint(gpsDestination)
+    --  exports['qb-notify']:Notify(Config.Startmsg, "success", 100000000)  
+    exports['okokNotify']:Alert('Branco DrugHiest', Config.Startmsg, 15000, 'phonemessage', true)
       TriggerEvent("Spawncar")
 	  TriggerEvent("Spawnnpc")
-
+    
 	end, function() -- Cancel
 		ClearPedTasksImmediately(player)   -- cancel the event the player is doing if they escape the progressbar xD
 		FreezeEntityPosition(player, false)   -- unfreezes the player 
@@ -56,13 +61,13 @@ end
 
 RegisterNetEvent("Spawncar", function()  
 QBCore.Functions.TriggerCallback('QBCore:Server:SpawnVehicle', function(netId)
-local veh = NetToVeh(netId)
-    local plate =QBCore.Functions.GetPlate(veh)
+	local veh = NetToVeh(netId)
 	SetCarItemsInfo()
-   -- SetVehicleDoorsLocked(plate, true)
+    SetVehicleDoorsLockedForAllPlayers(veh, true)
 	--TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
-	TriggerServerEvent('inventory:server:addTrunkItems', plate, Config.reward)
-
+	TriggerServerEvent('inventory:server:addTrunkItems', QBCore.Functions.GetPlate(veh), Config.reward) 
+    
+	SetVehicleEngineOn(veh, true, true)
 end, Config.car, Config.outpost1, false)
 end)
 

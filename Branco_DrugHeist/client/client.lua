@@ -10,7 +10,7 @@ Citizen.CreateThread(function()
         Citizen.Wait(100)
     end
 
-    local npcPed = CreatePed(4, npcModel, npcCoords.x, npcCoords.y, npcCoords.z, 0.0, false, false)
+    local npcPed = CreatePed(4, npcModel, npcCoords.x, npcCoords.y, npcCoords.z - 0.5, 0.0, false, false)
     Wait(500)
 
     SetEntityInvincible(npcPed, true)
